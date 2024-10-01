@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create New Comment</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f7f8fa;
+            padding: 20px;
+            margin: 0;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #444;
+            font-size: 1.1em;
+        }
+
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+            margin-bottom: 20px;
+        }
+
+        textarea {
+            min-height: 150px;
+        }
+
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 1.1em;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        a {
+            display: block;
+            text-align: center;
+            color: #007bff;
+            text-decoration: none;
+            font-size: 1.1em;
+            margin-top: 15px;
+        }
+
+        a:hover {
+            color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Create New Comment</h1>
+
+<!-- Форма для создания нового комментария -->
+<form th:action="@{/comments/{postId}(postId=${postId})}" th:object="${commentDTO}" method="post">
+    <!-- Скрытое поле для ID поста -->
+    <input type="hidden" th:field="*{post.id}" th:value="${postId}" /> <!-- ID поста -->
+
+    <!-- Поле для текста комментария -->
+    <label for="content">Comment:</label>
+    <textarea th:field="*{content}" id="content" placeholder="Write your comment here..." required></textarea>
+
+    <!-- Кнопка отправки формы -->
+    <button type="submit">Submit</button>
+</form>
+
+<!-- Ссылка для возврата к списку комментариев -->
+<a th:href="@{/comments}">Back to Comments</a>
+
+</body>
+</html>

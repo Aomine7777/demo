@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Blog Posts</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f7fa;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #343a40;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+        }
+
+        .search-container {
+            width: 80%;
+            margin: 0 auto 30px auto;
+            text-align: center;
+        }
+
+        .search-input {
+            width: 60%;
+            padding: 10px;
+            font-size: 1.1em;
+            border: 2px solid #007bff;
+            border-radius: 25px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            border-color: #0056b3;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+
+        .search-button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            margin-left: 10px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .search-button:hover {
+            background-color: #0056b3;
+        }
+
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 1.2em;
+        }
+
+        td {
+            color: #495057;
+            font-size: 1.1em;
+        }
+
+        .tag {
+            display: inline-block;
+            background-color: #e9ecef;
+            color: #495057;
+            padding: 5px 10px;
+            border-radius: 15px;
+            margin-right: 5px;
+            font-size: 0.9em;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: #0056b3;
+        }
+
+        button {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #c82333;
+        }
+
+        .new-post-btn {
+            display: block;
+            width: 200px;
+            text-align: center;
+            margin: 40px auto;
+            background-color: #28a745;
+            color: white;
+            padding: 15px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 1.3em;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .new-post-btn:hover {
+            background-color: #218838;
+        }
+
+        .comment-button {
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.2s ease;
+        }
+
+        .comment-button:hover {
+            background-color: #0056b3;
+        }
+
+        @media (max-width: 768px) {
+            table, .search-input {
+                width: 100%;
+            }
+
+            .search-input {
+                width: 70%;
+            }
+
+            .search-button {
+                width: auto;
+                margin-top: 10px;
+            }
+
+            .new-post-btn {
+                width: 80%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<h1>Blog Posts</h1>
+
+<div class="search-container">
+    <form th:action="@{/posts/search}" method="get">
+        <input type="text" name="query" class="search-input" placeholder="Search by title or tags..." th:value="${query}">
+        <button type="submit" class="search-button">Search</button>
+    </form>
+</div>
+
+<table>
+    <thead>
+    <tr>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Tags</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="post : ${posts}">
+        <td th:text="${post.title}">Post Title</td>
+        <td th:text="${post.author}">Post Author</td>
+        <td th:text="${post.tags}">Post Tag</td>
+
+        <td>
+            <a th:href="@{/posts/{id}(id=${post.id})}">View</a> |
+            <form th:action="@{/posts/{id}/delete(id=${post.id})}" method="post" style="display:inline;">
+                <button type="submit">Delete</button>
+            </form>
+            <a th:href="@{/comments/comment-list/new/{id}(id=${post.id})}" class="comment-button">Add Comment</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<a href="/posts/new" class="new-post-btn">Create New Post</a>
+
+</body>
+</html>
