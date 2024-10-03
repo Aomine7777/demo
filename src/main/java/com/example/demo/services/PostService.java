@@ -19,12 +19,6 @@ public class PostService {
     @Autowired
     private TagService tagService;
 
-    public Post createPost(Post post) {
-        post.setCreateDate(LocalDateTime.now());
-        post.setLastUpdateDate(LocalDateTime.now());
-        return postRepository.save(post);
-    }
-
     public Post updatePost(long id, PostDTO postDetails) {
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Post not found with id: " + id));
@@ -65,9 +59,4 @@ public class PostService {
     public List<Post> getPostsByTag(String tagName) {
         return postRepository.findByTagsNameIgnoreCase(tagName);
     }
-
-    public Optional<Post> getPostsById(long id) {
-        return postRepository.findById(id);
-    }
-
 }

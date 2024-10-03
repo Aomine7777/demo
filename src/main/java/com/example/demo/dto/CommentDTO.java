@@ -22,6 +22,13 @@ public class CommentDTO {
     public CommentDTO() {
     }
 
+    public CommentDTO(long id, String content, String createdDate, MyUser author) {
+        this.id = id;
+        this.content = content;
+        this.createdDate = createdDate;
+        this.author = author;
+    }
+
     public Post getPost() {
         return post;
     }

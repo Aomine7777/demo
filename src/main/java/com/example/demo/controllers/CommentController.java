@@ -47,19 +47,15 @@ public class CommentController {
         Post post = postService.getPostById(postId)
                 .orElseThrow(() -> new RuntimeException("Post not found"));
 
-        Optional<MyUser> author = userService.loadUserByUserName(principal.getName());
-        if (author.isEmpty()) {
-            throw new RuntimeException("User not found");
-        }
+        MyUser author = userService.loadUserByUserName(principal.getName())
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
-        Comment comment = new Comment();
-        comment.setContent(commentDTO.getContent());
-        comment.setPost(post);
-        comment.setAuthor(author.get());
-        comment.setCreatedDate(LocalDateTime.now());
+        Comment comment = commentService.createComment(commentDTO, post, author);
         commentService.save(comment);
 
         return "redirect:/posts/" + postId;
+
+
     }
 }
 
