@@ -16,7 +16,7 @@ public class PostDTO {
     private String lastUpdateDate;
     private Set<Comment> comments;
 
-    public PostDTO(long id, String title, String author, String content, String tags, String createDate, String lastUpdateDate, Set <Comment> comment) {
+    public PostDTO(long id, String title, String author, String content, String tags, String createDate, String lastUpdateDate, Set<Comment> comment) {
         this.id = id;
         this.title = title;
         this.author = author;

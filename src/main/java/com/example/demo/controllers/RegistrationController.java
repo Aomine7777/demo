@@ -20,10 +20,11 @@ public class RegistrationController {
     private PasswordEncoder passwordEncoder;
 
     @GetMapping("/register")
-    public String showRegistrationForm (Model model) {
+    public String showRegistrationForm(Model model) {
         model.addAttribute("user", new MyUser());
         return "register";
     }
+
     @PostMapping("/register")
     public String registerUser(@ModelAttribute("user") MyUser user, BindingResult result, Model model) {
         if (result.hasErrors()) {

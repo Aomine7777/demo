@@ -82,20 +82,17 @@
 
 <h1>Create New Comment</h1>
 
-<!-- Форма для создания нового комментария -->
 <form th:action="@{/comments/{postId}(postId=${postId})}" th:object="${commentDTO}" method="post">
-    <!-- Скрытое поле для ID поста -->
-    <input type="hidden" th:field="*{post.id}" th:value="${postId}" /> <!-- ID поста -->
 
-    <!-- Поле для текста комментария -->
+    <input type="hidden" th:field="*{post.id}" th:value="${postId}"/>
+
     <label for="content">Comment:</label>
     <textarea th:field="*{content}" id="content" placeholder="Write your comment here..." required></textarea>
 
-    <!-- Кнопка отправки формы -->
     <button type="submit">Submit</button>
 </form>
 
-<!-- Ссылка для возврата к списку комментариев -->
+
 <a th:href="@{/comments}">Back to Comments</a>
 
 </body>

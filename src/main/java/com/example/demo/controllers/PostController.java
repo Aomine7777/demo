@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -80,6 +81,7 @@ public class PostController {
         model.addAttribute("post", new Post());
         return "posts/form";
     }
+
     @PostMapping("/{id}/edit")
     public String updatePost(@PathVariable Long id, @ModelAttribute PostDTO post) {
         postService.updatePost(id, post);
@@ -102,6 +104,7 @@ public class PostController {
         postService.deletePost(id);
         return "redirect:/posts";
     }
+
     @GetMapping("/search")
     public String searchPosts(@RequestParam("query") String query, Model model) {
         List<Post> postsByTitle = postService.searchPostsByTitle(query);
@@ -126,6 +129,7 @@ public class PostController {
         model.addAttribute("posts", new ArrayList<>(collect));
         return "posts/comment-list";
     }
+
     @PostMapping("/create")
     public String createPost(@ModelAttribute PostDTO postDetails, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
