@@ -1,0 +1,168 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${post.title}">Post Details</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background-color: #fff;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            transition: transform 0.2s;
+        }
+
+        .container:hover {
+            transform: scale(1.01);
+        }
+
+        h1 {
+            font-size: 2.5em;
+            color: #333;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #007BFF;
+            padding-bottom: 10px;
+        }
+
+        p {
+            font-size: 1.2em;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .author, .content {
+            margin-bottom: 20px;
+        }
+
+        .comments {
+            margin-top: 40px;
+        }
+
+        .comments h3 {
+            font-size: 1.8em;
+            color: #333;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #007BFF;
+            padding-bottom: 10px;
+        }
+
+        .comment {
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .comment-author {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .comment-content {
+            margin-top: 10px;
+            color: #555;
+        }
+
+        .comment-date {
+            font-size: 0.8em;
+            color: #777;
+            margin-top: 5px;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        a, button {
+            font-size: 1em;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        a {
+            background-color: #007BFF;
+        }
+
+        a:hover {
+            background-color: #0056b3;
+        }
+
+        .delete-btn {
+            background-color: #dc3545;
+        }
+
+        .delete-btn:hover {
+            background-color: #c82333;
+        }
+
+        .back-btn {
+            background-color: #6c757d;
+        }
+
+        .back-btn:hover {
+            background-color: #5a6268;
+        }
+
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 0.9em;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1 th:text="${post.title}">Post Title</h1>
+
+    <p class="author"><strong>Author:</strong> <span th:text="${post.author}">Post Author</span></p>
+    <p><strong>Content:</strong></p>
+    <p class="content" th:text="${post.content}">Post Content</p>
+
+    <p><strong>Created on:</strong> <span th:text="${post.createDate}">Post Created Date</span></p>
+
+    <p><strong>Last Updated:</strong> <span th:text="${post.lastUpdateDate}">Post Last Updated Date</span></p>
+
+    <div class="comments">
+        <h3>Comments</h3>
+        <div th:if="${post.comments.size() == 0}">
+            <p>No comments yet. Be the first to comment!</p>
+        </div>
+        <div th:each="comment : ${post.comments}">
+            <div class="comment">
+                <p class="comment-author" th:text="${comment.author.userName}">Comment Author</p>
+                <p class="comment-content" th:text="${comment.content}">Comment Content</p>
+                <p class="comment-date" th:text="${comment.createdDate}">Comment Date</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="action-buttons">
+        <a href="/posts" class="back-btn">Back to Posts</a>
+        <a th:href="@{/posts/{id}/editForm(id=${post.id})}">Edit</a>
+        <form th:action="@{/posts/{id}/delete(id=${post.id})}" method="post" style="display:inline;">
+            <button type="submit" class="delete-btn">Delete</button>
+        </form>
+    </div>
+</div>
+
+<div class="footer">
+    <p>&copy; 2024 Blog Application. All rights reserved.</p>
+</div>
+
+</body>
+</html>
