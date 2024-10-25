@@ -4,34 +4,34 @@ import com.example.demo.dto.CommentDTO;
 import com.example.demo.models.Comment;
 import com.example.demo.models.Post;
 import com.example.demo.models.MyUser;
-import com.example.demo.services.CommentService;
 import com.example.demo.services.PostService;
 import com.example.demo.services.UserService;
+import com.example.demo.services.impl.CommentServiceImpl;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.time.LocalDateTime;
-import java.util.Optional;
 
+@AllArgsConstructor
 @Controller
 @RequestMapping("/comments")
 public class CommentController {
 
-    @Autowired
-    private CommentService commentService;
+    private static final Logger logger = LoggerFactory.getLogger(CommentController.class);
 
-    @Autowired
-    private PostService postService;
+    private final CommentServiceImpl commentService;
 
-    @Autowired
-    private UserService userService;
+    private final PostService postService;
 
-    @GetMapping("comment-list/new/{postId}")
+    private final UserService userService;
+
+    @GetMapping("/newComment/{postId}")
     public String newComment(@PathVariable Long postId, Model model) {
         model.addAttribute("commentDTO", new CommentDTO());
         model.addAttribute("postId", postId);
@@ -41,21 +41,26 @@ public class CommentController {
     @PostMapping("/{postId}")
     public String addComment(@PathVariable Long postId, @Valid @ModelAttribute("commentDTO") CommentDTO commentDTO, BindingResult bindingResult, Principal principal) {
         if (bindingResult.hasErrors()) {
+            logger.error("Validation errors for comment: {}", bindingResult.getAllErrors());
             return "comments/new-comment";
         }
 
-        Post post = postService.getPostById(postId)
-                .orElseThrow(() -> new RuntimeException("Post not found"));
+        Post post = postService.getPostById(postId).orElseThrow(() -> {
+            logger.error("Post with ID {} not found", postId);
+            return new RuntimeException("Post not found");
+        });
 
-        MyUser author = userService.loadUserByUserName(principal.getName())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        MyUser author = userService.loadUserByUserName(principal.getName()).orElseThrow(() -> {
+            logger.error("User {} not found", principal.getName());
+            return new RuntimeException("User not found");
+        });
 
         Comment comment = commentService.createComment(commentDTO, post, author);
         commentService.save(comment);
+        logger.info("Comment successfully added for post ID {} by user {}", postId, principal.getName());
 
         return "redirect:/posts/" + postId;
 
 
     }
 }
-

@@ -1,17 +1,13 @@
 package com.example.demo.dto;
 
-import com.example.demo.models.MyUser;
-import com.example.demo.models.Post;
-
-
 public class CommentDTO {
     private long id;
     private String content;
     private String createdDate;
-    private MyUser author;
-    private Post post;
+    private MyUserDTO author;
+    private PostDTO post;
 
-    public CommentDTO(long id, String content, String createdDate, MyUser author, Post post) {
+    public CommentDTO(long id, String content, String createdDate, MyUserDTO author, PostDTO post) {
         this.id = id;
         this.content = content;
         this.createdDate = createdDate;
@@ -22,26 +18,26 @@ public class CommentDTO {
     public CommentDTO() {
     }
 
-    public CommentDTO(long id, String content, String createdDate, MyUser author) {
+    public CommentDTO(long id, String content, String createdDate, MyUserDTO author) {
         this.id = id;
         this.content = content;
         this.createdDate = createdDate;
         this.author = author;
     }
 
-    public Post getPost() {
+    public PostDTO getPost() {
         return post;
     }
 
-    public void setPost(Post post) {
+    public void setPost(PostDTO post) {
         this.post = post;
     }
 
-    public MyUser getAuthor() {
+    public MyUserDTO getAuthor() {
         return author;
     }
 
-    public void setAuthor(MyUser author) {
+    public void setAuthor(MyUserDTO author) {
         this.author = author;
     }
 

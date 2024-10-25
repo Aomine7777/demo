@@ -2,34 +2,24 @@ package com.example.demo.configuration;
 
 import com.example.demo.models.MyUser;
 import com.example.demo.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
+@AllArgsConstructor
 @Service
 public class MyUserDetailService implements UserDetailsService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<MyUser> user = userRepository.findByUserName(username);
-        if (user.isPresent()) {
-            var userObj = user.get();
-            return User.builder()
-                    .username(userObj.getUserName())
-                    .password(userObj.getPassword())
-                    .roles(getRoles(userObj))
-                    .build();
-        } else {
-            throw new UsernameNotFoundException(username);
-        }
+        MyUser userObj = userRepository.findByUserName(username).orElseThrow(() -> new UsernameNotFoundException(username));
+
+        return User.builder().username(userObj.getUserName()).password(userObj.getPassword()).roles(getRoles(userObj)).build();
     }
 
     private String[] getRoles(MyUser user) {
